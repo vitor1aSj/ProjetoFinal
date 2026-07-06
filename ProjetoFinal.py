@@ -9,6 +9,7 @@ estoque_produtos = {
 }
 
 carrinho = []
+subtotal= 0
 
 while True:
     print("💀💀💀💀💀💀💀💀💀💀💀")
@@ -37,10 +38,10 @@ while True:
                 print("Quantidade inválida!")
             elif qtd_produto <= estoque_produtos[id_produto]["quantidade"]:
                 item = {
-                    "qtd": qtd_produto,
-                    "nome": estoque_produtos[id_produto]["nome"],
-                    "preco": estoque_produtos[id_produto]["preco"],
-                    "preco_total": qtd_produto * estoque_produtos[id_produto]["preco"]
+                    "qtd":qtd_produto,
+                    "nome":estoque_produtos[id_produto],
+                    "preco":estoque_produtos[id_produto]["preco"],
+                    "preco_total":qtd_produto * estoque_produtos[id_produto]["preco"]
                 }
                 carrinho.append(item)
                 estoque_produtos[id_produto]["quantidade"] -= qtd_produto
@@ -53,7 +54,6 @@ while True:
 
     elif opcao == 3:
         print("Vizualizando carrinho!")
-        subtotal = 0
         for i in carrinho:
             print(f"{i["qtd"]}x {i["nome"]} no valor de R$ {i["preco"]}(cada)\nTotal R${i["preco_total"]}")
             subtotal += i["preco_total"]
@@ -64,6 +64,30 @@ while True:
 
     elif opcao == 4:
         print("Finalizando compra!")
+        if not carrinho:
+            print(" O carrinho ainda está vazio. Não é possível finalizar a compra")
+        else:
+            desconto = 0
+            cupom = input("Digite um cupom de desconto ou caso não tenha um cupom, pressione enter")
+            if cupom == "DEV10":
+                desconto = subtotal * 0.1
+                print("Cupom válido: Você obteve 10% de desconto ")
+            elif cupom == "DEV20" and subtotal > 500:
+                desconto = subtotal * 0.2
+                print("Cupom válido: Você obteve 20% de desconto ")
+            elif len(cupom)== 0:
+                print("Nenhum cupom foi adicionado")
+            else:
+                print("Cupom inválido!")
+
+            print(f"Subtotal da compra : R${subtotal:,2f}")
+            print(f"Desconto: R$ {desconto:2.f}")
+            print(f"Valor  final : R${ subtotal - desconto :.2f}")
+            print("-" * 320)
+
+
+
+        print(f"Subtotal da compra R${subtotal}")
 
     elif opcao == 5:
         print("Saindo do sistema!")
